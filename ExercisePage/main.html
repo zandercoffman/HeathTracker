@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="Page.css">
     <script src="Stopwatch.js"></script>
     <script>
+      var amountClicked = 0;
       function replacePlayer() {
         const linkInput = document.getElementById('link-input');
         const playerContainer = document.querySelector('.player-container');
@@ -25,6 +26,12 @@
           // Extract the video ID from the link
           let videoId = youtubeLink.split("v=")[1];
 
+          // Check if there is an "&" in the link, indicating additional parameters
+          if (videoId.includes("&")) {
+            // Extract the video ID from the link using "&" as a separator
+            videoId = videoId.split("&")[0];
+          }
+
           // Create the embed link by concatenating the video ID to the base URL
           let embedLink = "https://www.youtube.com/embed/" + videoId;
 
@@ -35,7 +42,26 @@
           return;
         }
       }
+      function changeClick(id)
+      {
+        let checkbox = document.getElementById(id);
+        if (checkbox.checked)
+        {
+          //add
+          amountClicked++;
+        }
+        else
+        {
+          //skip
+          amountClicked--;
+        }
 
+        if (amountClicked == 8)
+        {
+          alert("You did it all!");
+        }
+      }
+      
     </script>
   </head>
   <body>
@@ -57,48 +83,49 @@
       </div>
     </header>
 
+    <div id="confetti-container"></div>
       <div class="container">
         <div class="sidebar">
           <h2>Sidebar</h2>
 
           <div id="checkboxes">
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark1" name="checkmark1" value="Bike">
+              <input type="checkbox" id="checkmark1" name="checkmark1" onclick="changeClick('checkmark1')" class="todoInput">
               <input type="text" id="label1" name="label1" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark2" name="checkmark2" value="Car">
+              <input type="checkbox" id="checkmark2" name="checkmark2" onclick="changeClick('checkmark2')" class="todoInput">
               <input type="text" id="label2" name="label2" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark3" name="checkmark3" value="Boat">
+              <input type="checkbox" id="checkmark3" name="checkmark3" onclick="changeClick('checkmark3')" class="todoInput">
               <input type="text" id="label3" name="label3" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark4" name="checkmark4" value="Train">
+              <input type="checkbox" id="checkmark4" name="checkmark4" onclick="changeClick('checkmark4')" class="todoInput">
               <input type="text" id="label4" name="label4" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark5" name="checkmark5" value="Plane">
+              <input type="checkbox" id="checkmark5" name="checkmark5" onclick="changeClick('checkmark5')" class="todoInput">
               <input type="text" id="label5" name="label5" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark6" name="checkmark6" value="Bus">
+              <input type="checkbox" id="checkmark6" name="checkmark6" onclick="changeClick('checkmark6')" class="todoInput">
               <input type="text" id="label6" name="label6" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark7" name="checkmark7" value="Motorcycle">
+              <input type="checkbox" id="checkmark7" name="checkmark7" onclick="changeClick('checkmark7')" class="todoInput">
               <input type="text" id="label7" name="label7" placeholder="Enter label text">
             </div>
             <br>
             <div style="display: flex;">
-              <input type="checkbox" id="checkmark8" name="checkmark8" value="Truck">
+              <input type="checkbox" id="checkmark8" name="checkmark8" onclick="changeClick('checkmark8')" class="todoInput">
               <input type="text" id="label8" name="label8" placeholder="Enter label text">
             </div>
             
@@ -107,7 +134,7 @@
           <br>
 
           <div style="display: flex;">
-            <input type="text" id="link-input">
+            <input type="text" id="link-input" class="link-input">
             <button onclick="replacePlayer()">Change Link</button>
           </div>
           
