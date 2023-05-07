@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="Page.css">
     <script src="Stopwatch.js"></script>
     <script>
-      var amountClicked = 0;
       function replacePlayer() {
         const linkInput = document.getElementById('link-input');
         const playerContainer = document.querySelector('.player-container');
@@ -42,26 +41,6 @@
           return;
         }
       }
-      function changeClick(id)
-      {
-        let checkbox = document.getElementById(id);
-        if (checkbox.checked)
-        {
-          //add
-          amountClicked++;
-        }
-        else
-        {
-          //skip
-          amountClicked--;
-        }
-
-        if (amountClicked == 8)
-        {
-          alert("You did it all!");
-        }
-      }
-      
     </script>
   </head>
   <body>
@@ -74,6 +53,9 @@
           <ul>
             <li>
               <span>Exercise</span>
+            </li>
+            <li>
+              <span>Routine</span>
             </li>
             <li>
               <span>Notifications</span>
@@ -134,7 +116,7 @@
           <br>
 
           <div style="display: flex;">
-            <input type="text" id="link-input" class="link-input">
+            <input type="text" id="link-input" class="linkinput">
             <button onclick="replacePlayer()">Change Link</button>
           </div>
           
@@ -146,11 +128,9 @@
               <button id="resume" style="text-align: center; display: none;" onclick="resumeStopwatch()">Resume</button>
               <button id="reset" style="text-align: center; display: none;" onclick="resetStopwatch()">Reset</button>
           </div>
-
-          <ul id="list-items"></ul>
         </div>
         <div class="player-container">
-          <iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+          <iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class="spotify-container">
           <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2dPLkpcwH6NyiXe2g7E28W?utm_source=generator" width="90%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
