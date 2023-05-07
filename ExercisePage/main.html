@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example layout</title>
+    <link rel="stylesheet" href="../MAIN.css">
+    <link rel="stylesheet" href="Page.css">
+    <script src="Stopwatch.js"></script>
+    <script>
+      function replacePlayer() {
+        const linkInput = document.getElementById('link-input');
+        const playerContainer = document.querySelector('.player-container');
+        const youtubeFrame = document.querySelector('#youtubePlayer');
+        const spotifyFrame = document.querySelector('#spotifyPlayer');
+        const link = linkInput.value;
+
+        if (link.includes("open.spotify.com")) {
+          let embeddedLink = link.replace("https://open.spotify.com/playlist/", "https://open.spotify.com/embed/playlist/")
+                                .concat("?utm_source=generator");
+          spotifyFrame.src = embeddedLink;
+          spotifyFrame.width = "400";
+        } else if (link.includes("youtube.com")) {
+          // Take the YouTube video link as input
+          let youtubeLink = link;
+
+          // Extract the video ID from the link
+          let videoId = youtubeLink.split("v=")[1];
+
+          // Create the embed link by concatenating the video ID to the base URL
+          let embedLink = "https://www.youtube.com/embed/" + videoId;
+
+          youtubeFrame.src = embedLink;
+          youtubeFrame.width = "800";
+        } else {
+          alert('bad link');
+          return;
+        }
+      }
+
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <a>Health Tracker</a>
+      </div>
+      <div class="header-right">
+        <nav>
+          <ul>
+            <li>
+              <span>Exercise</span>
+            </li>
+            <li>
+              <span>Notifications</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+      <div class="container">
+        <div class="sidebar">
+          <h2>Sidebar</h2>
+
+          <div id="checkboxes">
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark1" name="checkmark1" value="Bike">
+              <input type="text" id="label1" name="label1" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark2" name="checkmark2" value="Car">
+              <input type="text" id="label2" name="label2" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark3" name="checkmark3" value="Boat">
+              <input type="text" id="label3" name="label3" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark4" name="checkmark4" value="Train">
+              <input type="text" id="label4" name="label4" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark5" name="checkmark5" value="Plane">
+              <input type="text" id="label5" name="label5" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark6" name="checkmark6" value="Bus">
+              <input type="text" id="label6" name="label6" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark7" name="checkmark7" value="Motorcycle">
+              <input type="text" id="label7" name="label7" placeholder="Enter label text">
+            </div>
+            <br>
+            <div style="display: flex;">
+              <input type="checkbox" id="checkmark8" name="checkmark8" value="Truck">
+              <input type="text" id="label8" name="label8" placeholder="Enter label text">
+            </div>
+            
+          </div>
+
+          <br>
+
+          <div style="display: flex;">
+            <input type="text" id="link-input">
+            <button onclick="replacePlayer()">Change Link</button>
+          </div>
+          
+          <div class="timerContainer">
+            <h2 id="stopwatch">00:00:00</h2>
+              <br>
+              <button id="start" style="text-align: center;" onclick="startStopwatch()">Start</button>
+              <button id="pause" style="text-align: center; display: none;" onclick="pauseStopwatch()">Pause</button>
+              <button id="resume" style="text-align: center; display: none;" onclick="resumeStopwatch()">Resume</button>
+              <button id="reset" style="text-align: center; display: none;" onclick="resetStopwatch()">Reset</button>
+          </div>
+
+          <ul id="list-items"></ul>
+        </div>
+        <div class="player-container">
+          <iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="spotify-container">
+          <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2dPLkpcwH6NyiXe2g7E28W?utm_source=generator" width="90%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+        
+      </div>
+      <div class="button-container">
+          <button>Hello!</button>
+          <button>Hello!</button>
+          <button></button>
+          <button>Change Link</button>
+      </div>
+      
+  </body>
+</html>

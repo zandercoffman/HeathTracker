@@ -1,81 +1,112 @@
-.MainNotificationBox {
-    position: fixed;
-    bottom: 0;
-    left: 10;
-    background-color: #9d8787;
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    padding-top: 1;
-    animation: notification-pop-up 0.5s ease-out forwards;
-    box-sizing: border-box;
-    bottom: -100px;
-  }
-  
-  html
-  {
-    font-family: Inter,sans-serif;
-  }
-  .exitBox {
-    position: fixed;
-    bottom: -20;
-    left: 20px;
-    background-color: #6b3838;
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    padding-left: 50px;
-    display: flex;
-    align-items: center;
-    animation: notification-pop-up 0.5s ease-out forwards;
-    box-sizing: border-box;
-    z-index: 999; /* add a higher z-index value */
-  }
-  
-  .exitBox p {
-    color: #ffffff;
-    font-size: 20px;
-    margin: 0;
-    align-items: center;
-    text-indent: -180%;
-  }
 
-  .exitBox:hover{
-    cursor: pointer;
-  }
-  
-  @keyframes notification-pop-up {
-     0% {
-       bottom: -300px;
-       opacity: 0;
-     }
-     50% {
-       bottom: -20px;
-       opacity: 1;
-     }
-     100% {
-       bottom: 10px;
-     }
-  }
-  
-  @keyframes exit-animation {
-    0% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    50% {
-      transform: translateY(20px);
-      opacity: 0.5;
-    }
-    100% {
-      transform: translateY(50px);
-      opacity: 0;
-    }
-  }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #aeaeae;
+}
+.image-container{
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .notificationBox
-  {
-    visibility: visible;
-    display: block;
-  }
+body {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Set up the sidebar */
+.sidebar {
+  flex: 0 0 200px; /* Adjust as needed */
+  background-color: #eee;
+  padding: 20px;
+}
+
+header {
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+  color: #000000;
+  padding: 10px;
+  overflow: hidden; /* to contain floated elements */
+}
+
+.header-left {
+  float: left;
+}
+
+.header-right {
+  float: right;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+nav li:first-child {
+  margin-left: 0;
+}
+
+nav a {
+  color: #000000;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.header-left a {
+  text-align: left;
+}
+
+.header-right nav {
+  text-align: right;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* this sets the spacing between buttons */
+}
+
+.my-button {
+  padding: 10px 20px; /* this sets the button size */
+}
+#image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+}
+.background-image {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png");
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+}
+.shortened-background-image {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+.header-middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
