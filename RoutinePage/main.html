@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar Example</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #ddd;
+    }
+    td.today {
+      background-color: #ffc;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Calendar</h1>
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <script>
+    // Get the current date
+    const today = new Date();
+
+    // Create a table row for each week in the month
+    const calendarBody = document.querySelector('#calendar tbody');
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    let row = document.createElement('tr');
+    let dayCount = 0;
+    for (let date = new Date(monthStart); date <= monthEnd; date.setDate(date.getDate() + 1)) {
+      if (date.getDay() === 0) {
+        // Start a new row for each Sunday
+        row = document.createElement('tr');
+        calendarBody.appendChild(row);
+      }
+      const cell = document.createElement('td');
+      if (date.toDateString() === today.toDateString()) {
+        // Highlight today's date
+        cell.classList.add('today');
+      }
+      cell.textContent = date.getDate();
+      row.appendChild(cell);
+      dayCount++;
+    }
+
+    // Add blank cells for days in the next month
+    while (dayCount % 7 !== 0) {
+      const cell = document.createElement('td');
+      cell.classList.add('inactive');
+      row.appendChild(cell);
+      dayCount++;
+    }
+  </script>
+</body>
+</html>
