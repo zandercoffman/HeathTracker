@@ -4,21 +4,136 @@
     <title>Example layout</title>
     <link rel="stylesheet" href="../MAIN.css">
     <link rel="stylesheet" href="Page.css">
-    <script src="Stopwatch.js"></script>
     <script>
+      let timerInterval;
+      let stopwatchRunning = false;
+      let stopwatchPaused = false;
+      let stopwatchTime = 0;
+      let setCount = 0;
+      let repCount = 0;
+
+      function startStopwatch() {
+        if (stopwatchRunning) return;
+        stopwatchRunning = true;
+
+        timerInterval = setInterval(updateStopwatch, 1000);
+        document.getElementById('start').style.display = 'none';
+        document.getElementById('pause').style.display = 'block';
+        document.getElementById('reset').style.display = 'none';
+      }
+
+      function pauseStopwatch() {
+        if (!stopwatchRunning || stopwatchPaused) return;
+        stopwatchPaused = true;
+
+        clearInterval(timerInterval);
+        document.getElementById('pause').style.display = 'none';
+        document.getElementById('resume').style.display = 'block';
+        document.getElementById('reset').style.display = 'block';
+      }
+
+      function resumeStopwatch() {
+        if (!stopwatchRunning || !stopwatchPaused) return;
+        stopwatchPaused = false;
+
+        timerInterval = setInterval(updateStopwatch, 1000);
+        document.getElementById('pause').style.display = 'block';
+        document.getElementById('resume').style.display = 'none';
+        document.getElementById('reset').style.display = 'none';
+      }
+
+      function resetStopwatch() {
+        clearInterval(timerInterval);
+        stopwatchRunning = false;
+        stopwatchPaused = false;
+        stopwatchTime = 0;
+        updateStopwatch();
+
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('pause').style.display = 'none';
+        document.getElementById('resume').style.display = 'none';
+        document.getElementById('reset').style.display = 'none';
+      }
+
+      function updateStopwatch() {
+        stopwatchTime++;
+
+        let hours = Math.floor(stopwatchTime / 3600);
+        let minutes = Math.floor((stopwatchTime % 3600) / 60);
+        let seconds = stopwatchTime % 60;
+
+        document.getElementById('stopwatch').textContent = formatTime(hours) + ':' + formatTime(minutes) + ':' + formatTime(seconds);
+      }
+
+      function formatTime(time) {
+        return time.toString().padStart(2, '0');
+      }
+
+      function generateExercise() {
+        const exercises = [
+          { name: 'Push-Ups', description: 'A push-up is a common and effective exercise that primarily targets the muscles of the chest, shoulders, and triceps. It is performed by assuming a prone position on the floor and using the arms to push the body up and down.' },
+          { name: 'Plank', description: 'The plank is an isometric core exercise that strengthens the abdominal muscles, back, and shoulders. It involves maintaining a position similar to a push-up, with the body held in a straight line, supported by the forearms and toes.' },
+          { name: 'Lunges', description: 'Lunges are a lower body exercise that targets the quadriceps, hamstrings, and glutes. It involves taking a step forward with one leg and lowering the body until both knees are bent at a 90-degree angle.' },
+          { name: 'Burpees', description: 'Burpees are a full-body exercise that combines multiple movements, including a squat, plank, push-up, and jump. It is performed by starting in a standing position, then quickly dropping to a squat, performing a push-up, returning to the squat position, and jumping explosively.' },
+          { name: 'Mountain Climbers', description: 'Mountain climbers are a dynamic exercise that targets the core, shoulders, and legs. It involves assuming a push-up position and alternating bringing each knee towards the chest in a running motion.' },
+          { name: 'Bicycle Crunches', description: 'Bicycle crunches are an abdominal exercise that targets the rectus abdominis and obliques. It involves lying on your back, bringing the knees towards the chest, and performing a cycling motion with the legs while simultaneously twisting the torso.' },
+          { name: 'Deadlifts', description: 'Deadlifts are a compound exercise that primarily targets the muscles of the lower back, glutes, and hamstrings. It involves lifting a weighted barbell or dumbbells from the floor to a standing position while maintaining proper form and technique.' },
+          { name: 'Dumbbell Shoulder Press', description: 'The dumbbell shoulder press is a shoulder exercise that targets the deltoid muscles. It involves sitting or standing upright and pressing dumbbells overhead while keeping the core engaged and the back straight.' },
+          { name: 'Russian Twists', description: 'Russian twists are an abdominal exercise that targets the obliques and core muscles. It involves sitting on the floor, leaning back slightly, lifting the feet off the ground, and twisting the torso from side to side while holding a weight or keeping the hands clasped together.' },
+          { name: 'Chest Press', description: 'The chest press is an effective exercise that primarily targets the chest muscles. It can be performed using dumbbells, barbells, or a chest press machine. Lie on a bench or the floor and press the weights away from your chest, extending your arms fully and then returning to the starting position.' },
+          { name: 'Incline Push-Ups', description: 'Incline push-ups are a variation of push-ups that place more emphasis on the upper chest. Perform push-ups with your hands on an elevated surface, such as a step or bench, with your feet on the ground.' },
+          { name: 'Chest Flys', description: 'Chest flys are an isolation exercise that targets the chest muscles. Lie on a bench or the floor holding dumbbells or resistance bands. Start with your arms extended above your chest and slowly lower them to the sides, maintaining a slight bend in your elbows, and then bring them back up to the starting position.' },
+          { name: 'Wide Grip Push-Ups', description: 'Wide grip push-ups target the outer portion of the chest. Assume a push-up position, but place your hands wider than shoulder-width apart. Perform push-ups in this position, keeping your elbows out to the sides.' },
+          { name: 'Chest Squeeze with Resistance Band', description: 'Wrap a resistance band around a sturdy object and hold the ends in each hand. Stand with your back to the anchor point and bring your hands together in front of your chest. Slowly push your hands outward, stretching the band, and then bring them back together to complete one repetition.' },
+          { name: 'Crunches', description: 'Crunches are a classic abdominal exercise that target the rectus abdominis. It involves lying on your back with knees bent, placing hands behind your head, and lifting your shoulders off the ground while contracting your abs.' },
+          { name: 'Plank', description: 'The plank is an isometric core exercise that strengthens the abdominal muscles, back, and shoulders. It involves maintaining a position similar to a push-up, with the body held in a straight line, supported by the forearms and toes.' },
+          { name: 'Bicycle Crunches', description: 'Bicycle crunches are an abdominal exercise that targets the rectus abdominis and obliques. It involves lying on your back, bringing the knees towards the chest, and performing a cycling motion with the legs while simultaneously twisting the torso.' },
+          { name: 'Reverse Crunches', description: 'Reverse crunches target the lower abs. Lie on your back with your legs bent and knees lifted towards your chest. Place your hands on the floor beside you for support. Contract your abs and lift your hips off the floor, bringing your knees towards your chest.' },
+          { name: 'Leg Raises', description: 'Leg raises are an effective exercise for the lower abs. Lie on your back with your legs extended. Place your hands underneath your glutes for support. Contract your abs and lift your legs off the floor, keeping them straight. Lower them back down with control.' },
+          { name: 'Sit-Ups', description: 'Sit-ups are a traditional abdominal exercise that targets the rectus abdominis. Lie on your back with your knees bent and feet flat on the floor. Cross your arms over your chest or place your hands behind your head. Sit up by contracting your abs and lifting your torso towards your knees. Lower back down with control.' },
+          { name: 'Toe Touches', description: 'Toe touches are an exercise that targets the upper abs. Lie on your back with your legs extended towards the ceiling. Reach your arms towards your toes and lift your shoulders off the floor, reaching for your toes with your hands. Lower back down with control.' },
+          { name: 'Flutter Kicks', description: 'Flutter kicks engage the lower abs and hip flexors. Lie on your back with your legs extended. Lift your legs a few inches off the ground and alternate kicking them up and down in a scissor-like motion. Keep your abs engaged throughout the exercise.' },
+          { name: 'Resistance Band Bicep Curls', description: 'Stand with both feet on the resistance band, holding the ends with your palms facing forward. Keep your elbows close to your sides and curl your hands toward your shoulders, contracting your biceps. Slowly lower the hands back down to complete one repetition.' },
+          { name: 'Resistance Band Rows', description: 'Secure the resistance band around a sturdy object and hold the ends in each hand. Step back to create tension in the band and position your feet hip-width apart. Bend your knees slightly and hinge forward at the hips. Pull the band towards your body, squeezing your shoulder blades together. Slowly release to return to the starting position.' },
+          { name: 'Resistance Band Shoulder Press', description: 'Stand on the resistance band with both feet, holding the ends at shoulder height with your palms facing forward. Extend your arms overhead, fully extending your elbows, and then lower the hands back down to shoulder height to complete one repetition.' },
+          { name: 'Resistance Band Squats', description: 'Stand on the resistance band with both feet, holding the ends at shoulder height with your palms facing forward. Lower into a squat position, keeping your chest up and your knees aligned with your toes. Push through your heels to return to a standing position.' },
+          { name: 'Lunges', description: 'Lunges are a lower body exercise that targets the quadriceps, hamstrings, and glutes. It involves taking a step forward with one leg and lowering the body until both knees are bent at a 90-degree angle.' },
+          { name: 'Squats', description: 'Squats are a compound exercise that targets multiple muscles, including the quadriceps, hamstrings, and glutes. It involves bending the knees and hips to lower the body and then returning to a standing position.' },
+          { name: 'Leg Press', description: 'The leg press is a compound exercise that primarily targets the quadriceps, hamstrings, and glutes. It involves pushing a weighted sled with your legs while seated at a leg press machine.' },
+          { name: 'Calf Raises', description: 'Calf raises are an exercise that targets the calf muscles. Stand on the edge of a step or platform with the balls of your feet, then raise your heels as high as possible and lower them back down.' },
+          { name: 'Deadlifts', description: 'Deadlifts are a compound exercise that primarily targets the muscles of the lower back, glutes, and hamstrings. It involves lifting a weighted barbell or dumbbells from the floor to a standing position while maintaining proper form and technique.' },
+
+          // Leg Resistance Band Exercises
+          { name: 'Resistance Band Squats', description: 'Stand on the resistance band with both feet, holding the ends at shoulder height with your palms facing forward. Lower into a squat position, keeping your chest up and your knees aligned with your toes. Push through your heels to return to a standing position.' },
+          { name: 'Resistance Band Leg Press', description: 'Secure the resistance band around a sturdy object and sit on a chair or bench facing away from it. Place your feet on the band and press your legs forward, extending your knees and hips. Return to the starting position with control.' },
+          { name: 'Resistance Band Lateral Leg Raises', description: 'Secure the resistance band around your ankles and stand with your feet shoulder-width apart. Lift one leg out to the side against the resistance of the band, keeping your knee straight. Lower the leg back down and repeat on the other side.' },
+          { name: 'Resistance Band Glute Bridges', description: 'Lie on your back with your knees bent and feet flat on the floor. Place the resistance band just above your knees. Lift your hips off the ground, squeezing your glutes, and keeping your core engaged. Lower your hips back down and repeat.' },
+          { name: 'Resistance Band Hamstring Curls', description: 'Secure the resistance band around a sturdy object and lie on your stomach facing down. Place the band around your ankles and bend your knees, bringing your heels towards your glutes against the resistance of the band. Slowly extend your legs back to the starting position.' },
+                  // Add more exercises here
+        ];
+
+
+
+
+        const exerciseIndex = Math.floor(Math.random() * exercises.length);
+        const exercise = exercises[exerciseIndex];
+        const setCount = Math.floor(Math.random() * 5) + 1; // Generate a random number between 1 and 5 for sets
+        const repCount = Math.floor(Math.random() * 10) + 1; // Generate a random number between 1 and 10 for reps
+
+        document.getElementById('exercise-name').textContent = exercise.name;
+        document.getElementById('exercise-description').textContent = exercise.description;
+        document.getElementById('set-count').textContent = setCount;
+        document.getElementById('rep-count').textContent = repCount;
+      }
+
+
       function replacePlayer() {
         const linkInput = document.getElementById('link-input');
         const playerContainer = document.querySelector('.player-container');
         const youtubeFrame = document.querySelector('#youtubePlayer');
-        const spotifyFrame = document.querySelector('#spotifyPlayer');
         const link = linkInput.value;
 
-        if (link.includes("open.spotify.com")) {
-          let embeddedLink = link.replace("https://open.spotify.com/playlist/", "https://open.spotify.com/embed/playlist/")
-                                .concat("?utm_source=generator");
-          spotifyFrame.src = embeddedLink;
-          spotifyFrame.width = "400";
-        } else if (link.includes("youtube.com")) {
+        if (link.includes("youtube.com")) {
           // Take the YouTube video link as input
           let youtubeLink = link;
 
@@ -66,83 +181,46 @@
     </header>
 
     <div id="confetti-container"></div>
-      <div class="container">
-        <div class="sidebar">
-          <h2>Sidebar</h2>
-
-          <div id="checkboxes">
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark1" name="checkmark1" onclick="changeClick('checkmark1')" class="todoInput">
-              <input type="text" id="label1" name="label1" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark2" name="checkmark2" onclick="changeClick('checkmark2')" class="todoInput">
-              <input type="text" id="label2" name="label2" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark3" name="checkmark3" onclick="changeClick('checkmark3')" class="todoInput">
-              <input type="text" id="label3" name="label3" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark4" name="checkmark4" onclick="changeClick('checkmark4')" class="todoInput">
-              <input type="text" id="label4" name="label4" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark5" name="checkmark5" onclick="changeClick('checkmark5')" class="todoInput">
-              <input type="text" id="label5" name="label5" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark6" name="checkmark6" onclick="changeClick('checkmark6')" class="todoInput">
-              <input type="text" id="label6" name="label6" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark7" name="checkmark7" onclick="changeClick('checkmark7')" class="todoInput">
-              <input type="text" id="label7" name="label7" placeholder="Enter label text">
-            </div>
-            <br>
-            <div style="display: flex;">
-              <input type="checkbox" id="checkmark8" name="checkmark8" onclick="changeClick('checkmark8')" class="todoInput">
-              <input type="text" id="label8" name="label8" placeholder="Enter label text">
-            </div>
-            
-          </div>
-
+    <div class="container">
+      <div class="sidebar">
+        <h2>Sidebar</h2>
+      
+        <h3 style="text-align: center; text-decoration: solid; border: 2px solid rgb(0, 0, 0); background-color: rgb(161, 170, 170); border-radius: 12px; padding: 2px;" id="exercise-name">Exercise</h3>
+      
+        <p id="exercise-description">Exercise description</p>
+      
+        <h3 style="text-decoration: solid; text-align: center; border: 2px solid rgb(0, 0, 0); background-color: rgb(161, 170, 170); border-radius: 12px; padding: 2px;">Sets: <span id="set-count">0</span><br>Reps: <span id="rep-count">0</span></h3>
+      
+        <button style="display: flex; justify-content: center; align-items: center;" onclick="generateExercise()">Change Exercise</button>
+      
+        <br>
+      
+        <div style="display: flex;">
+          <input type="text" id="link-input" class="linkinput">
+          <button onclick="replacePlayer()">Change Link</button>
+        </div>
+      
+        <div class="timerContainer">
+          <h2 id="stopwatch">00:00:00</h2>
           <br>
-
-          <div style="display: flex;">
-            <input type="text" id="link-input" class="linkinput">
-            <button onclick="replacePlayer()">Change Link</button>
-          </div>
-          
-          <div class="timerContainer">
-            <h2 id="stopwatch">00:00:00</h2>
-              <br>
-              <button id="start" style="text-align: center;" onclick="startStopwatch()">Start</button>
-              <button id="pause" style="text-align: center; display: none;" onclick="pauseStopwatch()">Pause</button>
-              <button id="resume" style="text-align: center; display: none;" onclick="resumeStopwatch()">Resume</button>
-              <button id="reset" style="text-align: center; display: none;" onclick="resetStopwatch()">Reset</button>
-          </div>
+          <button id="start" style="text-align: center;" onclick="startStopwatch()">Start</button>
+          <button id="pause" style="text-align: center; display: none;" onclick="pauseStopwatch()">Pause</button>
+          <button id="resume" style="text-align: center; display: none;" onclick="resumeStopwatch()">Resume</button>
+          <button id="reset" style="text-align: center; display: none;" onclick="resetStopwatch()">Reset</button>
         </div>
-        <div class="player-container">
-          <iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="spotify-container">
-          <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2dPLkpcwH6NyiXe2g7E28W?utm_source=generator" width="90%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        
       </div>
-      <div class="button-container">
-          <button>Hello!</button>
-          <button>Hello!</button>
-          <button></button>
-          <button>Change Link</button>
+    
+      <div class="player-container">
+        <iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
       </div>
+    </div>
+  
+    <div class="button-container">
+      <button>Hello!</button>
+      <button>Hello!</button>
+      <button></button>
+      <button>Change Link</button>
+    </div>
       
   </body>
 </html>
